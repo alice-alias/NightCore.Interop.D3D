@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <RootNamespace>NightCore.Interop.D3D</RootNamespace>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+
+    <Version>0.0.1</Version>
+    <Description>Win32 API つかうやつ ― D3DCompiler 編</Description>
+    <PackageProjectUrl>https://github.com/alice-alias/NightCore.Interop.D3D</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/alice-alias/NightCore.Interop.D3D.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Authors>alice_alias</Authors>
+  </PropertyGroup>
+
+</Project>
