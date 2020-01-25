@@ -10,9 +10,9 @@ namespace NightCore.Interop.D3D
         public byte[] Code { get; }
         public string ErrorMessage { get; }
 
-        public int HResult { get; }
+        public HRESULT HResult { get; }
 
-        public D3DCompileResult(byte[] code, string message, int hresult)
+        public D3DCompileResult(byte[] code, string message, HRESULT hresult)
         {
             Code = code;
             ErrorMessage = message;
@@ -21,16 +21,16 @@ namespace NightCore.Interop.D3D
 
         public void ThrowException()
         {
-            if (HResult >= 0)
+            if (HResult.Succeed)
                 return;
 
             if (ErrorMessage != null)
             {
-                throw new D3DCompileException(HResult, ErrorMessage);
+                throw new D3DCompileException((int)HResult, ErrorMessage);
             }
             else
             {
-                Marshal.ThrowExceptionForHR(HResult);
+                Marshal.ThrowExceptionForHR((int)HResult);
             }
         }
     }
