@@ -9,12 +9,13 @@ namespace NightCore.Interop.D3D
 {
     sealed class D3DShaderMacroCollection : IDisposable
     {
-        public IntPtr Pointer { get; private set; }
+        public IntPtr Pointer => handle.Pointer;
+
+        readonly List<StructHandle> handles = new List<StructHandle>();
+        readonly StructHandle handle;
 
         public D3DShaderMacroCollection(IDictionary<string, string> data)
         {
-            var stride = Marshal.SizeOf<IntPtr>();
-
             var pointers = new List<IntPtr>();
 
             foreach (var (key, value) in data)
@@ -25,17 +26,14 @@ namespace NightCore.Interop.D3D
             pointers.Add(IntPtr.Zero);
             pointers.Add(IntPtr.Zero);
 
-            var pointersArray = pointers.ToArray();
-            Pointer = Marshal.AllocCoTaskMem(stride * pointersArray.Length);
-            Marshal.Copy(pointersArray, 0, Pointer, pointersArray.Length);
+            handle = StructHandle.Pin(pointers.ToArray());
         }
 
-        static IntPtr AllocString(string str)
+        IntPtr AllocString(string str)
         {
-            var bytes = Encoding.ASCII.GetBytes(str);
-            var ptr = Marshal.AllocCoTaskMem(bytes.Length);
-            Marshal.Copy(bytes, 0, ptr, bytes.Length);
-            return ptr;
+            var handle = StructHandle.Pin(Encoding.ASCII.GetBytes(str));
+            handles.Add(handle);
+            return handle.Pointer;
         }
 
         int locker;
@@ -44,18 +42,9 @@ namespace NightCore.Interop.D3D
         {
             if (Interlocked.Exchange(ref locker, 1) == 0)
             {
-                var current = Pointer;
-                var stride = Marshal.SizeOf<IntPtr>();
-                while (true)
-                {
-                    var ptr = Marshal.ReadIntPtr(current);
-                    if (ptr == IntPtr.Zero)
-                        break;
-                    Marshal.FreeCoTaskMem(ptr);
-                    current = IntPtr.Add(current, stride);
-                }
-                Marshal.FreeCoTaskMem(Pointer);
-                Pointer = IntPtr.Zero;
+                foreach (var i in handles)
+                    i.Dispose();
+                handle.Dispose();
             }
         }
 

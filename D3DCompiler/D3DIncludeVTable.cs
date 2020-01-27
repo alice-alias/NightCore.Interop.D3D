@@ -1,11 +1,13 @@
-﻿using System;
+﻿using NightCore.Interop.Com;
+using NightCore.Interop.Win32;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
 
 namespace NightCore.Interop.D3D
 {
-    public class D3DIncludeVTable : ComCallback<ID3DInclude>
+    public class D3DIncludeVTable : ComObject<ID3DInclude>
     {
         public D3DIncludeVTable(ID3DInclude target) : base(target) { }
 
@@ -18,7 +20,7 @@ namespace NightCore.Interop.D3D
         static HRESULT Close(IntPtr @this, IntPtr data)
             => Get(@this).Close(data);
 
-        protected override void Build(VTable vtable)
+        protected override void Build(Vtable vtable)
         {
             vtable.Add((OpenDelegate)Open);
             vtable.Add((CloseDelegate)Close);

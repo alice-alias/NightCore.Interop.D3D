@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NightCore.Interop.Win32;
+using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -8,6 +9,7 @@ namespace NightCore.Interop.D3D
     public class D3DCompileResult
     {
         public byte[] Code { get; }
+
         public string ErrorMessage { get; }
 
         public HRESULT HResult { get; }
@@ -21,7 +23,7 @@ namespace NightCore.Interop.D3D
 
         public void ThrowException()
         {
-            if (HResult.Succeed)
+            if (HResult.IsSucceed)
                 return;
 
             if (ErrorMessage != null)

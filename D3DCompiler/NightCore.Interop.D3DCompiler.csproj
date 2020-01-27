@@ -14,4 +14,8 @@
     <Authors>alice_alias</Authors>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="NightCore.Interop.Com" Version="0.0.1" />
+  </ItemGroup>
+
 </Project>

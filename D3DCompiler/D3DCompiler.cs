@@ -13,34 +13,27 @@ namespace NightCore.Interop.D3D
 
         public D3DCompileResult Compile(string source, string name, string entrypoint, D3DCompilerTarget target)
         {
-            var src = Encoding.ASCII.GetBytes(source);
-            var pSrc = GCHandle.Alloc(src, GCHandleType.Pinned);
+            using var src = StructHandle.Pin(Encoding.ASCII.GetBytes(source));
+            using var macros = new D3DShaderMacroCollection(Macros);
+
             var includeVtbl = new D3DIncludeVTable(Include);
-            try
-            {
-                using (var macros = new D3DShaderMacroCollection(Macros))
-                {
-                    var hresult = NativeMethods.D3DCompile(
-                        pSrc.AddrOfPinnedObject(),
-                        (IntPtr)src.Length,
-                        name,
-                        macros.Pointer,
-                        Include != null ? includeVtbl.Pointer : IntPtr.Zero,
-                        entrypoint,
-                        target,
-                        0,
-                        0,
-                        out var code,
-                        out var err);
-                    var errBuf = err.GetBytes();
-                    var errStr = errBuf != null ? Encoding.ASCII.GetString(errBuf) : null;
-                    return new D3DCompileResult(code.GetBytes(), errStr, hresult);
-                }
-            }
-            finally
-            {
-                pSrc.Free();
-            }
+
+            var hresult = NativeMethods.D3DCompile(
+                src.Pointer,
+                (IntPtr)src.Size,
+                name,
+                macros.Pointer,
+                Include != null ? includeVtbl.Pointer : IntPtr.Zero,
+                entrypoint,
+                target,
+                0,
+                0,
+                out var code,
+                out var err);
+
+            var errBuf = err.GetBytes();
+            var errStr = errBuf != null ? Encoding.ASCII.GetString(errBuf) : null;
+            return new D3DCompileResult(code.GetBytes(), errStr, hresult);
         }
     }
 }

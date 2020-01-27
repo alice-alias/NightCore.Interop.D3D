@@ -18,7 +18,7 @@ namespace NightCore.Interop.D3D
 
         public D3DBlob(int size)
         {
-            NativeMethods.D3DCreateBlob((IntPtr)size, out ptr).Check();
+            NativeMethods.D3DCreateBlob((IntPtr)size, out ptr).ThrowIfFailed();
         }
 
         public int Size => ptr.GetBufferSize().ToInt32();
