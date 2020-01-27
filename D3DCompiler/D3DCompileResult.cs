@@ -10,11 +10,11 @@ namespace NightCore.Interop.D3D
     {
         public byte[] Code { get; }
 
-        public string ErrorMessage { get; }
+        public string? ErrorMessage { get; }
 
         public HRESULT HResult { get; }
 
-        public D3DCompileResult(byte[] code, string message, HRESULT hresult)
+        public D3DCompileResult(byte[] code, string? message, HRESULT hresult)
         {
             Code = code;
             ErrorMessage = message;

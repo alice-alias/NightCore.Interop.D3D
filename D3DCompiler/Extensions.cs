@@ -9,9 +9,6 @@ namespace NightCore.Interop.D3D
     {
         internal static byte[] GetBytes(this ID3DBlob blob)
         {
-            if (blob == null)
-                return null;
-
             var buf = new byte[blob.GetBufferSize().ToInt32()];
             var ptr = blob.GetBufferPointer();
             Marshal.Copy(ptr, buf, 0, buf.Length);

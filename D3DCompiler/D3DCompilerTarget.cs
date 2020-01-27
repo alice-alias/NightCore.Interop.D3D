@@ -12,7 +12,7 @@ namespace NightCore.Interop.D3D
 
         public static explicit operator D3DCompilerTarget(string targetName) => new D3DCompilerTarget(targetName);
 
-        public override bool Equals(object obj) => obj is D3DCompilerTarget o && o.TargetName == TargetName;
+        public override bool Equals(object? obj) => obj is D3DCompilerTarget o && o.TargetName == TargetName;
         public override int GetHashCode() => TargetName.GetHashCode();
         public static bool operator ==(D3DCompilerTarget left, D3DCompilerTarget right) => left.Equals(right);
         public static bool operator !=(D3DCompilerTarget left, D3DCompilerTarget right) => !(left == right);

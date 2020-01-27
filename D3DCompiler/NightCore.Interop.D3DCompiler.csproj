@@ -3,9 +3,10 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.0</TargetFramework>
     <RootNamespace>NightCore.Interop.D3D</RootNamespace>
+    <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 
-    <Version>0.0.3</Version>
+    <Version>0.0.4</Version>
     <Description>Win32 API つかうやつ ― D3DCompiler 編</Description>
     <PackageProjectUrl>https://github.com/alice-alias/NightCore.Interop.D3D</PackageProjectUrl>
     <RepositoryUrl>https://github.com/alice-alias/NightCore.Interop.D3D.git</RepositoryUrl>
